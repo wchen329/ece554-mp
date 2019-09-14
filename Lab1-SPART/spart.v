@@ -38,6 +38,9 @@ module spart(
 	reg [15:0] rx_state_count;
 	reg rx_nxt_state;
 	
+	reg shifter;
+	wire nxt_bit;
+	
 	assign databus = (iocs & ~iorw) ? data : 8'bZ;
 	
 	always @* begin
@@ -52,6 +55,12 @@ module spart(
 			rx_state <= IDLE; 
 		else
 			rx_state <= rx_nxt_state;
+			
+	always@(posedge clk) begin
+		if (rst)
+			shifter <= 8'b0;
+		else
+			shifter <= nxt_bit;
 	
 	always@(posedge clk)
 		if (sample_en) begin
@@ -59,6 +68,9 @@ module spart(
 				IDLE:
 					if (rxd == 1'b0) begin
 						rx_state_count <= rx_state_count + 1;
+					end
+					else begin
+						rx_state_count <= (rx_state_count == 16'b0) ? 16'b0 : (rx_state_count - 1);
 					end
 					if (rx_state_count > 16'd8)
 						rx_nxt_state <= ACTIVE;

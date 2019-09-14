@@ -1,0 +1,94 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/intelFPGA_lite/18.1
+vdriver
+Z0 !s110 1568508322
+!i10b 1
+!s100 ;5dYCbGXmcGURGCD::GbZ2
+IZ2<]=KY1LQ@CfhXAZ64ae3
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dC:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART
+Z3 w1568505448
+8C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v
+FC:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v
+L0 20
+Z4 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z5 !s108 1568508322.000000
+!s107 C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v|
+!i113 1
+Z6 o-work work
+Z7 tCvgOpt 0
+vlab1_spart
+R0
+!i10b 1
+!s100 lfIc;9WQ0=VK=0C^`_6R51
+I6VOTIIV?WUL6iJV3W8Yj>2
+R1
+R2
+R3
+8C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v
+FC:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v
+L0 6
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v|
+!i113 1
+R6
+R7
+vshifter
+!s110 1568508400
+!i10b 1
+!s100 02lYPL;hMom?e5TUG`4h[3
+ISoSjRcLMI_l`bSocFK]4c0
+R1
+R2
+w1568508397
+8C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter.v
+FC:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter.v
+L0 1
+R4
+r1
+!s85 0
+31
+!s108 1568508400.000000
+!s107 C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter.v|
+!i113 1
+R6
+R7
+vshifter_tb
+!s110 1568502467
+!i10b 1
+!s100 `gh8[_BG5bVXP5;ne5Mj53
+I6=CU[OE>ZUIF2@ghhZEOg1
+R1
+R2
+w1568502451
+8C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter_tb.v
+FC:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter_tb.v
+L0 1
+R4
+r1
+!s85 0
+31
+!s108 1568502467.000000
+!s107 C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter_tb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shifter_tb.v|
+!i113 1
+R6
+R7
