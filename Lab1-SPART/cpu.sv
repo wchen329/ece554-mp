@@ -6,18 +6,15 @@
  * DATABUS - used to transfer data between processor and SPART
  * IOADDR - specific register number address
  */
-module cpu(input clk, input rst, output iocs, input rda, tbr, iorw, output [1:0] ioaddr, inout[7:0] databus);
-
-	// Helper Wires
+module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
 
 	// Register Names
 	typedef enum
 	{
-		ZERO,
-		ONE,
-		TWO,
-		THREE
-
+		TRANSMIT = 2'b00,
+		STATUS = 2'b01,
+		LOW_DIV_BUF = 2'b10,
+		HI_DIV_BUF = 2'b11
 	} register_name;
 
 	// Read or Write
@@ -66,5 +63,11 @@ module cpu(input clk, input rst, output iocs, input rda, tbr, iorw, output [1:0]
 	// Tie chip select to one
 	assign iocs = 1'b1;
 	assign iorw = write_read_op;
+
+	// Register selection
+	assign ioaddr =  	1 ? TRANSMIT :
+			 	1 ? STATUS :
+				1 ? LOW_DIV_BUF :
+				1 ? HI_DIV_BUF : 2'd0;
 
 endmodule
