@@ -5,8 +5,17 @@
  *
  * DATABUS - used to transfer data between processor and SPART
  * IOADDR - specific register number address
+ * BAUD_SEL - baud rate selection
  */
-module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
+module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
+
+	// Baudrate Codes
+	typedef enum {
+		BR_4800 = 2'd0,
+		BR_9600 = 2'd1,
+		BR_19200 = 2'd2,
+		BR_38400 = 2'd3
+	} br_select_code;
 
 	// Register Names
 	typedef enum
@@ -27,6 +36,7 @@ module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0]
 	// SPART Buffer
 	logic[7:0] buffer;
 	logic write_read_op;
+	reg[15:0] bbr_buf; // this holds the base baud rate value. Set it by multiplexer.
 	reg[1:0] ishhw;
 
 	always @(posedge clk) begin
@@ -35,6 +45,10 @@ module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0]
 			write_read_op <= READ;
 			buffer <= 8'd0;
 			ishhw <= 2'b00;
+			
+			bbr_buf <=	baud_sel == BR_4800 ? 4800 :
+					baud_sel == BR_9600 ? 9600 :
+					baud_sel == BR_19200 ? 19200 : 38400;
 		end
 
 		// Still setting up
@@ -58,9 +72,13 @@ module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0]
 
 	// Static assignments
 
+	// If just reset, drive data bus with baud rate
+	// Afterwards...
 	// If reading, then CPU shouldn't be driving the bus.
 	// If writing, then CPU should be driving the bus
-	assign databus =	rda ? {8{1'bz}} : // Read Ready
+	assign databus =	ishhw == 2'b00 ? baud_sel[7:0] : // Low Half Word first
+				ishhw == 2'b01 ? baud_sel[15:8] : // Then High Half Word
+				rda ? {8{1'bz}} : // Read Ready
 				tbr ? buffer :	// Write Ready
 				{8{1'bz}};
 
