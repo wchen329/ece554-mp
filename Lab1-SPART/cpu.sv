@@ -27,27 +27,31 @@ module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0]
 	// SPART Buffer
 	logic[7:0] buffer;
 	logic write_read_op;
+	reg[1:0] ishhw;
 
 	always @(posedge clk) begin
 		
 		if(rst) begin
 			write_read_op <= READ;
 			buffer <= 8'd0;
+			ishhw <= 2'b00;
 		end
-		
-		else begin
-			// Only do more work if IO/CS is enabled. Otherwise, do nothing
-			if(iorw) begin
-			
-				// If RDA is available, then read the value into the buffer
-				if(rda) begin
-					buffer <= databus;
-					write_read_op <= READ; 
-				end
 
-				else if(tbr) begin
-					write_read_op <= WRITE;
-				end
+		// Still setting up
+		else if(ishhw < 2'b10) begin
+			ishhw++;
+		end
+
+		else begin
+
+			// If RDA is available, then read the value into the buffer
+			if(rda) begin
+				buffer <= databus;
+				write_read_op <= READ; 
+			end
+
+			else if(tbr) begin
+				write_read_op <= WRITE;
 			end
 		end
 	end
@@ -65,9 +69,9 @@ module cpu(input clk, input rst, output iocs, iorw, input rda, tbr, output [1:0]
 	assign iorw = write_read_op;
 
 	// Register selection
-	assign ioaddr =  	1 ? TRANSMIT :
-			 	1 ? STATUS :
-				1 ? LOW_DIV_BUF :
-				1 ? HI_DIV_BUF : 2'd0;
+	assign ioaddr =  	ishhw == 2'b00 ? LOW_DIV_BUF :
+				ishhw == 2'b01 ? HI_DIV_BUF : 
+				tbr || rda ? TRANSMIT :
+			 	~tbr & ~rda  ? STATUS : 2'd0;
 
 endmodule
