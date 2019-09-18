@@ -1,0 +1,72 @@
+C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/brg_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/brg_tb.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module brg_tb
+
+Top level modules:
+	brg_tb
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/mock_cpu.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/mock_cpu.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module mock_cpu
+
+Top level modules:
+	mock_cpu
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/driver.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module driver
+
+Top level modules:
+	driver
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shift_out.v {1 {vlog -work work -stats=none {C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shift_out.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shift_out
+
+Top level modules:
+	shift_out
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shifter.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shifter.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shifter
+
+Top level modules:
+	shifter
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/lab1_spart.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module lab1_spart
+
+Top level modules:
+	lab1_spart
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shift_out_tb.v {1 {vlog -work work -stats=none {C:\Users\ECE_STUDENT\Desktop\legendary-octo-enigma-master\Lab1-SPART\shift_out_tb.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shift_out_tb
+
+Top level modules:
+	shift_out_tb
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/brg.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/brg.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BRG
+
+Top level modules:
+	BRG
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shifter_tb.v {1 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/shifter_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shifter_tb
+
+Top level modules:
+	shifter_tb
+
+} {} {}} C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v {0 {vlog -work work -stats=none C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module spart
+** Error: (vlog-13069) C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v(51): near "end": syntax error, unexpected end.
+** Error: (vlog-13069) C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v(59): near "always": syntax error, unexpected always.
+** Error: C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v(80): 'ACTIVE' already exists - must not be redefined.
+** Error: (vlog-13069) C:/Users/ECE_STUDENT/Desktop/legendary-octo-enigma-master/Lab1-SPART/spart.v(80): near "if": syntax error, unexpected if, expecting "SystemVerilog keyword 'assert' " or "SystemVerilog keyword 'assume' " or restrict .
+
+} {4.0 8.0} {}}
