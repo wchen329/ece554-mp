@@ -1,18 +1,10 @@
-/* BRG
- * a.k.a. Baud Rate Generator
- *
- * clk - clock signal
- * start - raise this to begin a new baud rate count. Raising this also enables div_in for writing
- * div_hword - if HIGH then div_in is set to the high word of the divisor buffer
- *             if LOW then div_in is set to the low word of the divisor buffer
- */
-module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
+module BRG(input clk, start, input[31:0] bbase, output enable);
 
 	localparam HZ_PER_TERAHERTZ = 64'd1000000000000;
 
 	// Frequency Counter
 	reg[31:0] down_counter;
-	reg[16:0] br; // divisor buffer
+	reg[31:0] br;
 
 	// Phase Setting
 	always @(posedge clk) begin
@@ -24,12 +16,7 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 			///////////////////
 			// BASE REGISTER //
 			///////////////////
-			if(div_hword) begin
-				br[7:0] = div_in;
-			end
-			else begin
-				br[15:8] = div_in;
-			end
+			br = bbase;
 		end
 
 		// Otherwise, go set the down counter register and the base register

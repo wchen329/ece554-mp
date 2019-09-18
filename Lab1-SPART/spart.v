@@ -43,6 +43,8 @@ module spart(
 	
 	assign databus = (iocs & ~iorw) ? data : 8'bZ;
 	
+	shifter receive_shifter(input nxt_bit, input clk, input rst, input baud_en, output [7:0]data, output rda);
+	
 	always @* begin
 		if (ioaddr == 2'b01 && iorw == 1'b1)
 			data = // TODO
