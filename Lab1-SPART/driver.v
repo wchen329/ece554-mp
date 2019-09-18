@@ -29,5 +29,14 @@ module driver(
     inout [7:0] databus
     );
 
+	// Instantiate CPU to harness
+	cpu CPU0(	.clk(clk),
+			.rst(rst),
+			.iocs(iocs),
+			.iorw(iorw),
+			.rda(rda),
+			.tbr(tbr),
+			.ioaddr(ioaddr),
+			.databus(databus));
 
 endmodule
