@@ -6,7 +6,7 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 	localparam HZ_PER_TERAHERTZ = 64'd1000000000000;
 
 	// Frequency Counter
-	reg[31:0] down_counter;
+	reg[15:0] down_counter;
 	reg[15:0] br; // division buffer
 
 	// Phase Setting
@@ -36,8 +36,23 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 
 			// Set it to the maximum value if currently 0
 			if(down_counter == 0) begin
-				down_counter <= 32'd150;
-				//(((HZ_PER_TERAHERTZ/clk) / ((1 << 4) * br)) + 1);
+				
+				if(br == 16'd38400) begin
+					down_counter <= (16'd80); // Counter for 38400
+				end
+				
+				if(br == 16'd19200) begin
+					down_counter <= (16'd161); // Counter for 19200
+				end
+				
+				if(br == 16'd9600) begin
+					down_counter <= (16'd325); // Counter for 9600
+				end
+				
+				if(br == 16'd4800) begin
+					down_counter <= (16'd650); // Counter for 4800
+				end
+				
 			end
 
 			// Otherwise, decrement

@@ -10,14 +10,30 @@
 module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
 
 	// Baudrate Codes
-	typedef enum {
+	localparam[1:0] BR_4800 = 2'd0;
+	localparam[1:0] BR_9600 = 2'd1;
+	localparam[1:0] BR_19200 = 2'd2;
+	localparam[1:0] BR_38400 = 2'd3;
+	
+	// Register Names
+	localparam[1:0] TRANSMIT = 2'b00;
+	localparam[1:0] STATUS = 2'b01;
+	localparam[1:0] LOW_DIV_BUF = 2'b10;
+	localparam[1:0] HI_DIV_BUF = 2'b11;	
+
+	// Read or Write
+	localparam READ = 1'b1;
+	localparam WRITE = 1'b0;
+	
+	// Baudrate Codes
+	/*typedef enum {
 		BR_4800 = 2'd0,
 		BR_9600 = 2'd1,
 		BR_19200 = 2'd2,
 		BR_38400 = 2'd3
 	} br_select_code;
-
-	// Register Names
+*/
+/*	// Register Names
 	typedef enum
 	{
 		TRANSMIT = 2'b00,
@@ -25,14 +41,14 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 		LOW_DIV_BUF = 2'b10,
 		HI_DIV_BUF = 2'b11
 	} register_name;
-
+*/
 	// Read or Write
-	typedef enum
+	/*typedef enum
 	{
 		READ = 1'b1,
 		WRITE = 1'b0
 	} IOMode;
-
+*/
 	// SPART Buffer
 	logic[7:0] buffer;
 	logic write_read_op;
@@ -67,11 +83,11 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 			if(rda) begin 
 				received <= 2'b01;
 				write_read_op <= READ; // set read for next cycle
+				buffer <= databus;
 			end
 
 			// Next cycle start reading
 			else if(received == 2'b01) begin
-				buffer <= databus;
 				write_read_op <= WRITE; // set write for next cycle
 				received <= 2'b10;
 			end

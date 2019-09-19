@@ -45,10 +45,20 @@ wire [1:0] br_cfg;
 // press button[0] to generate a low active reset signal
 wire rst = ~KEY[0];
 
+reg rda_kept;
+always @(posedge CLOCK_50) begin
+	if (rst) begin
+		rda_kept = 1'b0;
+	end
+	if (rda == 1'b1) begin
+		rda_kept = 1'b1;
+	end
+end
+
 // LED[9] : indicator for RX signal
 // LED[8] : indicator for TX signal
 // LED[0] : indicator for rst signal 
-assign LEDR = {~rxd,~txd,7'b0,rst};
+assign LEDR = {~rxd,~txd, rda_kept, 6'b0,rst};
 
 // GPIO[3] as TX output, GPIO[5] as RX input
 assign GPIO[3] = txd;
