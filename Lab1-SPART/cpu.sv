@@ -7,7 +7,7 @@
  * IOADDR - specific register number address
  * BAUD_SEL - baud rate selection
  */
-module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
+module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
 
 	// Baudrate Codes
 	typedef enum {
@@ -36,7 +36,7 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, rda, tb
 	// SPART Buffer
 	logic[7:0] buffer;
 	logic write_read_op;
-	reg[15:0] bbr_buf; // this holds the base baud rate value. Set it by multiplexer.
+	reg[15:0] bbr_buf; // this holds the base baud rate value. Set it by multiplexer.	
 	reg[1:0] ishhw;
 
 	always @(posedge clk) begin
@@ -76,8 +76,8 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, rda, tb
 	// Afterwards...
 	// If reading, then CPU shouldn't be driving the bus.
 	// If writing, then CPU should be driving the bus
-	assign databus =	ishhw == 2'b00 ? baud_sel[7:0] : // Low Half Word first
-				ishhw == 2'b01 ? baud_sel[15:8] : // Then High Half Word
+	assign databus =	ishhw == 2'b00 ? bbr_buf[7:0] : // Low Half Word first
+				ishhw == 2'b01 ? bbr_buf[15:8] : // Then High Half Word
 				rda ? {8{1'bz}} : // Read Ready
 				tbr ? buffer :	// Write Ready
 				{8{1'bz}};

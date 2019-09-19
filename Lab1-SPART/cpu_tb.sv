@@ -15,7 +15,7 @@ module cpu_tb();
 	// Probe wires
 	wire probe_IOCS;
 	wire probe_IO_RnW;
-	wire probe_IO_addr;
+	wire[1:0] probe_IO_addr;
 	wire[7:0] probe_IO_databus;
 
 	always #100 clk = ~clk;
@@ -27,6 +27,7 @@ module cpu_tb();
 			.baud_sel(baud_sel_bus),
 			.rda(rda_net),
 			.tbr(tbr_net),
+			.ioaddr(probe_IO_addr),
 			.databus(probe_IO_databus)
 		);
 
@@ -39,7 +40,22 @@ module cpu_tb();
 			rda = 1'b0;
 			tbr = 1'b0;
 			@(posedge clk) rst = 0;
-			repeat(100) @(posedge clk);
+			
+			repeat(3) @(posedge clk);
+			
+			@(posedge clk)
+			rda = 1'b1;
+			tbr = 1'b0;
+
+			@(posedge clk);
+			rda = 1'b0;
+			tbr = 1'b1;
+
+			@(posedge clk);
+			rda = 1'b1;
+			tbr = 1'b1;
+
+			repeat(1) @(posedge clk);
 		end
 		$stop;
 	end
