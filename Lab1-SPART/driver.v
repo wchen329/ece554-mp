@@ -34,6 +34,7 @@ module driver(
 			.rst(rst),
 			.iocs(iocs),
 			.iorw(iorw),
+			.baud_sel(br_cfg),
 			.rda(rda),
 			.tbr(tbr),
 			.ioaddr(ioaddr),
