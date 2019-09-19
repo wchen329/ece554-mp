@@ -38,11 +38,15 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 	logic write_read_op;
 	reg[15:0] bbr_buf; // this holds the base baud rate value. Set it by multiplexer.	
 	reg[1:0] ishhw;
+	wire received;
+	
+	assign received = rda;
 
 	always @(posedge clk) begin
 		
 		if(rst) begin
-			write_read_op <= READ;
+			//received <= 1'b0;
+			write_read_op <= WRITE;
 			buffer <= 8'd0;
 			ishhw <= 2'b00;
 			
@@ -54,6 +58,9 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 		// Still setting up
 		else if(ishhw < 2'b10) begin
 			ishhw++;
+			if (ishhw == 2'b10) begin
+				write_read_op <= READ;
+			end
 		end
 
 		else begin
@@ -62,10 +69,12 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 			if(rda) begin
 				buffer <= databus;
 				write_read_op <= READ; 
+				//received <= 1'b1;
 			end
 
-			else if(tbr) begin
+			else if(tbr && received) begin
 				write_read_op <= WRITE;
+				//received <= 1'b0;
 			end
 		end
 	end
@@ -79,7 +88,7 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 	assign databus =	ishhw == 2'b00 ? bbr_buf[7:0] : // Low Half Word first
 				ishhw == 2'b01 ? bbr_buf[15:8] : // Then High Half Word
 				rda ? {8{1'bz}} : // Read Ready
-				tbr ? buffer :	// Write Ready
+				(tbr && received) ? buffer :	// Write Ready
 				{8{1'bz}};
 
 	// Tie chip select to one
@@ -89,7 +98,6 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 	// Register selection
 	assign ioaddr =  	ishhw == 2'b00 ? LOW_DIV_BUF :
 				ishhw == 2'b01 ? HI_DIV_BUF : 
-				tbr || rda ? TRANSMIT :
-			 	~tbr & ~rda  ? STATUS : 2'd0;
+				(tbr && received) || rda ? TRANSMIT : STATUS;
 
 endmodule
