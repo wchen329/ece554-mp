@@ -14,16 +14,16 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 		
 		// Reset the counter state to 0 (i.e. accept a new counter)
 		if(start) begin		
-			down_counter = 0;
+			down_counter <= 0;
 
 			///////////////////
 			// BASE REGISTER //
 			///////////////////
 			if(div_hword) begin
-				br[15:8] = div_in;
+				br[15:8] <= div_in;
 			end
 			else begin
-				br[7:0] = div_in;
+				br[7:0] <= div_in;
 			end
 		end
 
@@ -36,7 +36,8 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 
 			// Set it to the maximum value if currently 0
 			if(down_counter == 0) begin
-				down_counter <= (((HZ_PER_TERAHERTZ/clk) / ((1 << 4) * br)) + 1);
+				down_counter <= 32'd150;
+				//(((HZ_PER_TERAHERTZ/clk) / ((1 << 4) * br)) + 1);
 			end
 
 			// Otherwise, decrement
@@ -47,6 +48,6 @@ module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
 	end
 
 	// Static asignments
-	assign enable = down_counter == 0 ? 1'b1 : 1'b0; // enabled to count down again, any time the counter is 0.
+	assign enable = down_counter == 32'd1 ? 1'b1 : 1'b0; // enabled to count down again, any time the counter is 0.
 
 endmodule

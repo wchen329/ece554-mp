@@ -30,62 +30,41 @@ module spart(
     input rxd
     );
 
-	wire data;
-	wire sample_en, bit_en;
+	wire [7:0] rx_data;
+	wire [7:0] tx_data;
+	wire [7:0] div_in;
+	wire brg_rst;
+	wire [7:0] data;
+	wire rx_rst;
+	
+	assign brg_rst = (rst == 1'b1 || (iocs == 1'b1 && iorw == 1'b0 && ioaddr[1] == 1'b1)) ? 1'b1 : 1'b0;
 	
 	parameter IDLE = 2'b00, ACTIVE = 2'b01;
-	reg rx_state;
-	reg [15:0] rx_state_count;
-	reg rx_nxt_state;
 	
-	reg shifter;
-	wire nxt_bit;
+	wire baud_en;
+	wire tx_en;
 	
-	assign databus = (iocs & ~iorw) ? data : 8'bZ;
+	assign data = (ioaddr[0] == 1'b1) ? {6'b0, tbr, rda} : rx_data;
 	
-	shifter receive_shifter(input nxt_bit, input clk, input rst, input baud_en, output [7:0]data, output rda);
+	assign databus = (iocs & iorw) ? data : 8'bZ;
 	
-	always @* begin
-		if (ioaddr == 2'b01 && iorw == 1'b1)
-			data = // TODO
-			
+	assign div_hword = (ioaddr == 2'b11) ? 1'b1 : 1'b0;
 	
-	end
+	assign div_in = databus;
 	
-	always@(posedge clk) begin
-		if (rst)
-			rx_state <= IDLE; 
-		else
-			rx_state <= rx_nxt_state;
-			
-	always@(posedge clk) begin
-		if (rst)
-			shifter <= 8'b0;
-		else
-			shifter <= nxt_bit;
+	assign tx_en = ((iocs & ~iorw) && (ioaddr == 2'b00)) ? 1'b1 : 1'b0;
 	
-	always@(posedge clk)
-		if (sample_en) begin
-			case(rx_state)
-				IDLE:
-					if (rxd == 1'b0) begin
-						rx_state_count <= rx_state_count + 1;
-					end
-					else begin
-						rx_state_count <= (rx_state_count == 16'b0) ? 16'b0 : (rx_state_count - 1);
-					end
-					if (rx_state_count > 16'd8)
-						rx_nxt_state <= ACTIVE;
-					else
-						rx_nxt_state <= IDLE;
-				ACTIVE:
-					if (rxd == 1'b0) begin
-						
-					end
-			endcase
-		end
+	assign rx_rst = rst | (iocs & iorw & (ioaddr == 2'b00));
 	
-	//Counter
+	assign tx_data = (iocs & ~iorw) ? databus : 8'b0;
 	
+	// TODO: baud_en from brg
+	shifter rx_shifter(rxd, clk, rx_rst, baud_en, rx_data, rda);
+	
+	// TODO: tx_en
+	shift_out tx_shifter(clk, rst, tx_en, baud_en, tx_data, txd, tbr);
+	
+	// Baud rate generator
+	BRG brg(clk, brg_rst, div_hword, div_in, baud_en);
 
 endmodule

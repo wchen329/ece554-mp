@@ -1,30 +1,22 @@
-/* BRG
- * also known as "Baud Rate Generator"
- */
-module BRG(input clk, start, div_hword, input[7:0] div_in, output enable);
+module BRG(input clk, rst, input[31:0] bbase, output enable);
 
 	localparam HZ_PER_TERAHERTZ = 64'd1000000000000;
 
 	// Frequency Counter
 	reg[31:0] down_counter;
-	reg[15:0] br; // division buffer
+	reg[31:0] br;
 
 	// Phase Setting
 	always @(posedge clk) begin
 		
 		// Reset the counter state to 0 (i.e. accept a new counter)
-		if(start) begin		
+		if(rst) begin		
 			down_counter = 0;
 
 			///////////////////
 			// BASE REGISTER //
 			///////////////////
-			if(div_hword) begin
-				br[7:0] = div_in;
-			end
-			else begin
-				br[15:8] = div_in;
-			end
+			br = bbase;
 		end
 
 		// Otherwise, go set the down counter register and the base register
