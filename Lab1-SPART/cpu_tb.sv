@@ -43,7 +43,7 @@ module cpu_tb();
 			
 			repeat(3) @(posedge clk);
 			
-			@(posedge clk)
+			@(posedge clk);
 			rda = 1'b1;
 			tbr = 1'b0;
 
