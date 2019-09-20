@@ -1,3 +1,4 @@
-# ECE554 Mini-Project 1
+# ECE554 Mini Projects
 
-Serial Port echoing program for FPGA.
+FPGA Miniprojects for ECE 554. They currently consist of
+- SPART
