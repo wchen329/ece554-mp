@@ -1,6 +1,5 @@
 /* Transmit Control
- * Important to generate signal that can be used in handshaking with CPU (i.e. TBR) based on count of 
- * baud rate generator.
+ *
  */
 module shift_out(input clk, input rst, input en, input baud_en, input [7:0]data, output out, output tbr);
 	reg [9:0] buffer;

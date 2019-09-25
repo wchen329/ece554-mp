@@ -1,7 +1,6 @@
 /* CPU
  * A "fake" CPU
  * That just holds an 8-bits of data (a.k.a. a BYTE) and sends them out on a data bus
- * wchen329 
  *
  * DATABUS - used to transfer data between processor and SPART
  * IOADDR - specific register number address
@@ -25,30 +24,6 @@ module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input r
 	localparam READ = 1'b1;
 	localparam WRITE = 1'b0;
 	
-	// Baudrate Codes
-	/*typedef enum {
-		BR_4800 = 2'd0,
-		BR_9600 = 2'd1,
-		BR_19200 = 2'd2,
-		BR_38400 = 2'd3
-	} br_select_code;
-*/
-/*	// Register Names
-	typedef enum
-	{
-		TRANSMIT = 2'b00,
-		STATUS = 2'b01,
-		LOW_DIV_BUF = 2'b10,
-		HI_DIV_BUF = 2'b11
-	} register_name;
-*/
-	// Read or Write
-	/*typedef enum
-	{
-		READ = 1'b1,
-		WRITE = 1'b0
-	} IOMode;
-*/
 	// SPART Buffer
 	logic[7:0] buffer;
 	logic write_read_op;

@@ -1,5 +1,3 @@
-// SPART Testbench
-// Testbench for spart.v module
 module spart_tb();
 
 reg clk;

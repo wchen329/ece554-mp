@@ -58,7 +58,7 @@ module lab1_spart_tb();
 		key = 4'd1;
 	end
 
-	// Static assignments for wires to the mocked test values
+	// Static assignments for wires
 	assign rxd_net = rxd;
 	assign key_bus = key;
 	assign switch_bus = switch_in;

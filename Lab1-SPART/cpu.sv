@@ -1,11 +1,7 @@
 /* CPU
  * A "fake" CPU
  * That just holds an 8-bits of data (a.k.a. a BYTE) and sends them out on a data bus
- * wchen329 
  *
- * DATABUS - used to transfer data between processor and SPART
- * IOADDR - specific register number address
- * BAUD_SEL - baud rate selection
  */
 module cpu(input clk, input rst, output iocs, iorw, input[1:0] baud_sel, input rda, tbr, output [1:0] ioaddr, inout[7:0] databus);
 
