@@ -19,6 +19,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	driver
 
+} {} {}} C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter.v {1 {vlog -work work -stats=none C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shifter
+
+Top level modules:
+	shifter
+
 } {} {}} C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart_tb.v {1 {vlog -work work -stats=none C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart_tb.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module lab1_spart_tb
@@ -74,5 +81,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	brg_tb
+
+} {} {}} C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v {1 {vlog -work work -stats=none C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shift_out
+
+Top level modules:
+	shift_out
 
 } {} {}}

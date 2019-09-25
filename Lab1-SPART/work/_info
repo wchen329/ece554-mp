@@ -10,7 +10,7 @@ cModel Technology
 dC:/Users/wchen/Documents/spart_mp1
 vBRG
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1569386656
+Z1 !s110 1569387117
 !i10b 1
 !s100 >954hV]POWlDeJcM>?]4L3
 IhDk?Q;So9Z`^=dU9RmBoj1
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1569386656.000000
+Z6 !s108 1569387117.000000
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/brg.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/brg.sv|
 !i113 1
@@ -59,7 +59,7 @@ R7
 R8
 vcpu
 R0
-R1
+Z9 !s110 1569387118
 !i10b 1
 !s100 RXUbQ4VXGz0d@d8K;0KT61
 I7`cSc?njonNci<TzN1PjM2
@@ -83,7 +83,7 @@ R7
 R8
 vcpu_tb
 R0
-R1
+R9
 !i10b 1
 !s100 cP:3iff_ziz1=kD3E`bL<0
 IDe6R?dkjo5b1F^jiGND9F2
@@ -99,14 +99,14 @@ R5
 r1
 !s85 0
 31
-R6
+Z10 !s108 1569387118.000000
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/cpu_tb.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/cpu_tb.sv|
 !i113 1
 R7
 R8
 vdriver
-R1
+R9
 !i10b 1
 !s100 0B2B2kFA=3BKcQ>M_dPe90
 I>JkRXh7g`C=7mMkf0nn[a3
@@ -120,14 +120,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/driver.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/driver.v|
 !i113 1
-Z9 o-work work
+Z11 o-work work
 R8
 vlab1_spart
-R1
+R9
 !i10b 1
 !s100 j3EYW?e26JOiBhfBTnBaF2
 IU11nQ8M_PDYke@33bX1L`2
@@ -141,14 +141,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart.v|
 !i113 1
-R9
+R11
 R8
 vlab1_spart_tb
-R1
+R9
 !i10b 1
 !s100 61eGoml6K:[4jo1Pn4olR1
 IM7JMEQj;]@MGaFAlndYUH3
@@ -162,11 +162,11 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/lab1_spart_tb.v|
 !i113 1
-R9
+R11
 R8
 vmock_cpu
 R0
@@ -193,13 +193,13 @@ r1
 R7
 R8
 vshift_out
-R1
+R9
 !i10b 1
-!s100 k?WZFO6zKT4GNb@anF3D`1
-IUXDG9W^<h@YMSHVJAKK263
+!s100 D9<A]<WCCQ0gB>K4Vc9LC3
+IViWWAW<AMZRkY^>olQ32V0
 R2
 R3
-w1569386093
+w1569387112
 8C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v
 FC:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v
 L0 5
@@ -207,14 +207,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out.v|
 !i113 1
-R9
+R11
 R8
 vshift_out_tb
-R1
+R9
 !i10b 1
 !s100 P=[^fc2`oYfB7mZdThcaZ2
 I3;S8Ff`FEQn_Fc4_QA9aR2
@@ -228,14 +228,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shift_out_tb.v|
 !i113 1
-R9
+R11
 R8
 vshifter
-R1
+R9
 !i10b 1
 !s100 o7b=4MRRe=cTT0GOHo>?T2
 Ih;ohZ9@7N;XoHPAVYJBn[2
@@ -249,14 +249,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter.v|
 !i113 1
-R9
+R11
 R8
 vshifter_tb
-R1
+R9
 !i10b 1
 !s100 `zGoWMj^8h_M07djYR_IN0
 IZAV[=0nOJo6JSLA8GO>A]2
@@ -270,14 +270,14 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/shifter_tb.v|
 !i113 1
-R9
+R11
 R8
 vspart
-R1
+R9
 !i10b 1
 !s100 I9^]>>1aCG9zPP9ke6YEn1
 ICO;C?VVZGZi?G_Z;NJnd[1
@@ -291,11 +291,11 @@ R5
 r1
 !s85 0
 31
-R6
+R10
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/spart.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/spart.v|
 !i113 1
-R9
+R11
 R8
 vspart_tb
 R1
@@ -312,9 +312,9 @@ R5
 r1
 !s85 0
 31
-!s108 1569386655.000000
+R6
 !s107 C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/spart_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab1-SPART/spart_tb.v|
 !i113 1
-R9
+R11
 R8
