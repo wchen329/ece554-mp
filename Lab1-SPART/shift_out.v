@@ -1,4 +1,4 @@
-/* Transmit Control
+/* Transmit Control, Shift Register, and Buffer
  * Important to generate signal that can be used in handshaking with CPU (i.e. TBR) based on count of 
  * baud rate generator.
  */
@@ -13,6 +13,7 @@ module shift_out(input clk, input rst, input en, input baud_en, input [7:0]data,
 	assign tbr = r_tbr;
 	
 	always @(posedge clk) begin
+		// Initialize all necessary registers
 		if (rst) begin
 			buffer <= 10'b0;
 			counter <= 4'b0;
@@ -20,6 +21,7 @@ module shift_out(input clk, input rst, input en, input baud_en, input [7:0]data,
 			r_tbr <= 1'b1;
 			r_out <= 1'b1;
 		end
+
 		else if (en) begin
 			buffer <= {1'b1, data, 1'b0};
 			bit_counter <= 4'd10;
