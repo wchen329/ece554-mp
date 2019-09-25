@@ -47,7 +47,7 @@ module cpu_tb();
 			repeat(4) @(posedge clk);			
 			rda = 1'b1;
 			tbr = 1'b1;
-			read_sig <= 1'b1;
+			read_sig <= 1'b1
 
 			@(posedge clk);
 			rda = 1'b0;

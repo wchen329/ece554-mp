@@ -1,7 +1,6 @@
 /* Mock CPU
  * A "fake" CPU
  * That just holds an 8-bits of data (a.k.a. a BYTE) and sends them out on a data bus
- * wchen329 
  */
 
 module mock_cpu(input clk, input rst, input[7:0] bus_spart, input spart_data_ready, input out_ready, output[7:0] bus_out);

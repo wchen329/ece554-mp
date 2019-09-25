@@ -1,5 +1,5 @@
 /* Driver
- * The "driver" is a simple interface to the CPU-FSM module
+ * The "driver" is a simple interface to the CPU module
  */
 module driver(
     input clk,

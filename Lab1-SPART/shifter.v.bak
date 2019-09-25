@@ -1,4 +1,4 @@
-/* Shifter / Shift Register
+/* Shifter
  *
  */
 module shifter(input rxd, input clk, input rst, input baud_en, output [7:0]data, output has_data);
@@ -12,8 +12,6 @@ module shifter(input rxd, input clk, input rst, input baud_en, output [7:0]data,
 	assign has_data = full;
 	
 	always @(posedge clk) begin
-
-		// Initialize Shift Register 
 		if (rst) begin
 			shifter_data <= 8'b0;
 			buffer <= 8'b0;
