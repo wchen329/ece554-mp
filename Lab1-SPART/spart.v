@@ -1,22 +1,7 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:   
-// Design Name: 
-// Module Name:    spart 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
+/* SPART
+ * a.k.a. Serial Port
+ * This module encapsulates the SPART implementation.
+ */
 module spart(
     input clk,
     input rst,
@@ -58,10 +43,8 @@ module spart(
 	
 	assign tx_data = (iocs & ~iorw) ? databus : 8'b0;
 	
-	// TODO: baud_en from brg
 	shifter rx_shifter(rxd, clk, rx_rst, baud_en, rx_data, rda);
 	
-	// TODO: tx_en
 	shift_out tx_shifter(clk, rst, tx_en, baud_en, tx_data, txd, tbr);
 	
 	// Baud rate generator
