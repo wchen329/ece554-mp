@@ -29,15 +29,15 @@ module Convolution_Filter(	input clk,
 	 */
 	
 	// Wire declarations
-	signed wire[11:0] COEFF_0;
-	signed wire[11:0] COEFF_1;
-	signed wire[11:0] COEFF_2;
-	signed wire[11:0] COEFF_3;
-	signed wire[11:0] COEFF_4;
-	signed wire[11:0] COEFF_5;
-	signed wire[11:0] COEFF_6;
-	signed wire[11:0] COEFF_7;
-	signed wire[11:0] COEFF_8;
+	wire signed[11:0] COEFF_0;
+	wire signed[11:0] COEFF_1;
+	wire signed[11:0] COEFF_2;
+	wire signed[11:0] COEFF_3;
+	wire signed[11:0] COEFF_4;
+	wire signed[11:0] COEFF_5;
+	wire signed[11:0] COEFF_6;
+	wire signed[11:0] COEFF_7;
+	wire signed[11:0] COEFF_8;
 	
 	// Coeffficient 0
 	assign COEFF_0 =	-12'd1;
