@@ -1,0 +1,24 @@
+module Abs_tb();
+
+	reg clk; // "clock" signal, used to change testbench input
+	reg[11:0] stimulus;
+	wire[11:0] test;
+	Abs DUT(.in(stimulus), .out(test));
+	always #10 assign clk = ~clk;
+
+	initial begin
+		clk = 1'b0;
+		stimulus = 12'd0;
+		if(test != 12'd0) $display("Error: out value is incorrect");
+		@(posedge clk);
+		stimulus = 12'd100;
+		if(test != 12'd100) $display("Error: out value is incorrect, got %d expected 100", test);
+		@(posedge clk);
+		stimulus = -12'd120;
+		if(test != 12'd120) $display("Error: out value is incorrect, got %d expected 120", test);
+		@(posedge clk);
+		$stop;
+	end
+
+endmodule
+

@@ -8,36 +8,80 @@ z2
 !i10f 100
 cModel Technology
 dC:/intelFPGA_lite/18.1
-vConvolution_Filter
-Z0 !s110 1569541693
+vAbs
+Z0 !s110 1569545862
 !i10b 1
-!s100 o6V6=N_`Z3hRL`1PchbG90
-IUSW4k6FP<lke@CA;2n`W]1
+!s100 T1gGZBhVz>Xm;]=lo`9b^3
+I0UH?iY;P1jRRelf:2_]M>2
 Z1 VDg1SIo80bB@j0V0VzS_@n1
 Z2 dC:/Users/wchen/Documents/ece554-mp/Lab2-Conv
-w1569541565
-8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
-FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
-L0 7
+w1569544859
+8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v
+FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v
+L0 4
 Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1569541693.000000
-!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
-!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
+Z4 !s108 1569545862.000000
+!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v|
+!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v|
 !i113 1
 Z5 o-work ece554-conv
 Z6 tCvgOpt 0
+n@abs
+vAbs_tb
+R0
+!i10b 1
+!s100 1;?C8AlIZ2B3Xz<4oC9]R0
+I`_G^XbFMTo^^@i7Bk^3DY2
+R1
+R2
+w1569545860
+8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs_tb.v
+FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs_tb.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs_tb.v|
+!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs_tb.v|
+!i113 1
+R5
+R6
+n@abs_tb
+vConvolution_Filter
+R0
+!i10b 1
+!s100 o6V6=N_`Z3hRL`1PchbG90
+IUSW4k6FP<lke@CA;2n`W]1
+R1
+R2
+w1569541565
+8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
+FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
+L0 7
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
+!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
+!i113 1
+R5
+R6
 n@convolution_@filter
 vConvolution_Filter_tb
 R0
 !i10b 1
-!s100 ZAD=;3BnMnRh=K18Y_N0W3
-IK6Lm6=M32<N90MX<HfYMi0
+!s100 2L6dXLUo6igRP47dm2b681
+I_A49B4<;:f]2DZ8azU@3l0
 R1
 R2
-w1569541658
+w1569542064
 8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v
 FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v
 L0 4

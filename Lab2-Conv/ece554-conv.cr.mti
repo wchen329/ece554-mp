@@ -5,4 +5,18 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	Convolution_Filter
 
+} {} {}} C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v {1 {vlog -work ece554-conv -stats=none C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Abs.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Abs
+
+Top level modules:
+	Abs
+
+} {} {}} C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v {1 {vlog -work ece554-conv -stats=none C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Convolution_Filter_tb
+
+Top level modules:
+	Convolution_Filter_tb
+
 } {} {}}
