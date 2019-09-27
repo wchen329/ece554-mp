@@ -49,7 +49,7 @@ module Convolution_Filter(	input clk,
 	assign COEFF_2 =	isHorz ? -12'd1 : 12'd1;
 
 	// Coefficient 3
-	assign COEFF_3 =	isHorz ? 12'd0 : 12'd2;
+	assign COEFF_3 =	isHorz ? 12'd0 : -12'd2;
 
 	// Coefficient 4
 	assign COEFF_4 =	12'd0;
@@ -58,13 +58,13 @@ module Convolution_Filter(	input clk,
 	assign COEFF_5 =	isHorz ? 12'd0 : 12'd2;
 
 	// Coefficient 6
-	assign COEFF_6 =	isHorz ? 12'd1 : 12'd1;
+	assign COEFF_6 =	12'd1;
 
 	// Coefficient 7
 	assign COEFF_7 =	isHorz ? 12'd2 : 12'd0;
 	
 	// Coefficient 8
-	assign COEFF_8 =	isHorz ? 12'd1 : 12'd1;
+	assign COEFF_8 =	12'd1;
 
 	/* The actual convolution
 	 * This convolution is completely combinational
