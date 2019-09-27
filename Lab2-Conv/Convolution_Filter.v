@@ -16,7 +16,7 @@ module Convolution_Filter(	input clk,
 				input[11:0] X_p7, //input[11:0] X_INz0p1,
 				input[11:0] X_p8, //input[11:0] X_INp1p1,
 				output[11:0] y
-		):
+			);
 
 	/* Convolution coefficients. The exact coefficients can be selected through
 	 * the HorzSel signal.

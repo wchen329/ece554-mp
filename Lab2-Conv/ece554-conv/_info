@@ -1,0 +1,54 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/intelFPGA_lite/18.1
+vConvolution_Filter
+Z0 !s110 1569541693
+!i10b 1
+!s100 o6V6=N_`Z3hRL`1PchbG90
+IUSW4k6FP<lke@CA;2n`W]1
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dC:/Users/wchen/Documents/ece554-mp/Lab2-Conv
+w1569541565
+8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
+FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v
+L0 7
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1569541693.000000
+!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
+!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter.v|
+!i113 1
+Z5 o-work ece554-conv
+Z6 tCvgOpt 0
+n@convolution_@filter
+vConvolution_Filter_tb
+R0
+!i10b 1
+!s100 ZAD=;3BnMnRh=K18Y_N0W3
+IK6Lm6=M32<N90MX<HfYMi0
+R1
+R2
+w1569541658
+8C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v
+FC:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v
+L0 4
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v|
+!s90 -reportprogress|300|-work|ece554-conv|-stats=none|C:/Users/wchen/Documents/ece554-mp/Lab2-Conv/Convolution_Filter_tb.v|
+!i113 1
+R5
+R6
+n@convolution_@filter_tb
