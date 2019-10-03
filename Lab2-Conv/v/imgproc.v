@@ -24,6 +24,7 @@ wire	[11:0]	oBlue;
 wire  [11:0] 	oGrey;
 wire 	[11:0]   y;
 wire 	[11:0]   abs_y;
+wire	[11:0]	out_y;
 
 output [11:0]  oGrey_R;
 output [11:0]  oGrey_G;
@@ -59,9 +60,9 @@ assign	oBlue	=	mCCD_B[11:0];
 
 
 assign 	oGrey = (oRed + oGreen + oGreen + oBlue) / 4;
-assign	oGrey_G = abs_y;
-assign	oGrey_B = abs_y;
-assign 	oGrey_R = abs_y;
+assign	oGrey_G = out_y;
+assign	oGrey_B = out_y;
+assign 	oGrey_R = out_y;
 
 assign	oDVAL	=	mDVAL;
 
@@ -80,19 +81,21 @@ Line_Buffer2 	u1 (	.clken(mDVAL),
 
 Convolution_Filter conv_filter(	iCLK,
 				iSW,
-				cDATAdd_0,	//input[11:0] X_INn1n1,
-				cDATAd_0, //input[11:0] X_INz0n1,
-				cDATA_0, //input[11:0] X_INp1n1,
+				cDATAdd_2,	//input[11:0] X_INn1n1,
+				cDATAd_2, //input[11:0] X_INz0n1,
+				cDATA_2, //input[11:0] X_INp1n1,
 				cDATAdd_1, //input[11:0] X_INn1z0,
 				cDATAd_1, //input[11:0] X_INz0z0,
 				cDATA_1, //input[11:0] X_INp1z0,
-				cDATAdd_2, //input[11:0] X_INn1p1,
-				cDATAd_2, //input[11:0] X_INz0p1,
-				cDATA_2, //input[11:0] X_INp1p1,
+				cDATAdd_0, //input[11:0] X_INn1p1,
+				cDATAd_0, //input[11:0] X_INz0p1,
+				cDATA_0, //input[11:0] X_INp1p1,
 				y
 			);
 			
 Abs a1(y, abs_y);
+
+assign out_y = (iX_Cont > 9 && iX_Cont < 1270 && iY_Cont > 9 && iY_Cont < 940 ) ? abs_y : 12'b0;
 						
 
 always@(posedge iCLK or negedge iRST)
