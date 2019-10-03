@@ -260,6 +260,11 @@ wire	       [11:0]			cCCD_G;
 wire	       [11:0]			cCCD_B;
 wire								cCCD_DVAL;
 
+wire	       [11:0]			rCCD_R;
+wire	       [11:0]			rCCD_G;
+wire	       [11:0]			rCCD_B;
+wire								rCCD_DVAL;
+
 wire								sdram_ctrl_clk;
 wire	       [9:0]			oVGA_R;   				//	VGA Red[9:0]
 wire	       [9:0]			oVGA_G;	 				//	VGA Green[9:0]
@@ -345,13 +350,25 @@ imgproc				u4a(
 							.oDVAL(cCCD_DVAL),
 							.iX_Cont(X_Cont),
 							.iY_Cont(Y_Cont),
-							.iSW(SW[3])
+							.iSW(SW[4])
+						   );
+							
+RAW2RGB				u4b(.iCLK(D5M_PIXLCLK),
+							.iRST(DLY_RST_1),
+							.iDATA(mCCD_DATA),
+							.iDVAL(mCCD_DVAL),
+							.oRed(rCCD_R),
+							.oGreen(rCCD_G),
+							.oBlue(rCCD_B),
+							.oDVAL(rCCD_DVAL),
+							.iX_Cont(X_Cont),
+							.iY_Cont(Y_Cont)
 						   );
 
-assign sCCD_R = SW[2] ? gCCD_R : cCCD_R;
-assign sCCD_G = SW[2] ? gCCD_G : cCCD_G;
-assign sCCD_B = SW[2] ? gCCD_B : cCCD_B;
-assign sCCD_DVAL = SW[2] ? gCCD_DVAL : cCCD_DVAL;
+assign sCCD_R = SW[3] ? rCCD_R : (SW[2] ? gCCD_R : cCCD_R);
+assign sCCD_G = SW[3] ? rCCD_G : (SW[2] ? gCCD_G : cCCD_G);
+assign sCCD_B = SW[3] ? rCCD_G : (SW[2] ? gCCD_B : cCCD_B);
+assign sCCD_DVAL = SW[3] ? rCCD_DVAL : (SW[2] ? gCCD_DVAL : cCCD_DVAL);
 
 
 //Frame count display
