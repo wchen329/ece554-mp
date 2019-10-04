@@ -58,7 +58,7 @@ assign	oRed	=	mCCD_R[11:0];
 assign	oGreen	=	mCCD_G[12:1];
 assign	oBlue	=	mCCD_B[11:0];
 
-
+// Generate grey
 assign 	oGrey = (oRed + oGreen + oGreen + oBlue) / 4;
 assign	oGrey_G = out_y;
 assign	oGrey_B = out_y;
@@ -71,14 +71,15 @@ Line_Buffer1 	u0	(	.clken(iDVAL),
 						.shiftin(iDATA),
 						.taps0x(mDATA_1),
 						.taps1x(mDATA_0)	);
-
+	
+// Line buffer for convolution: 3 taps with 960 line width
 Line_Buffer2 	u1 (	.clken(mDVAL),
 						.clock(iCLK),
 						.shiftin(oGrey),
 						.taps0x(cDATA_0),
 						.taps1x(cDATA_1),
 						.taps2x(cDATA_2)	);
-
+// Convolution filter module: 9 input, combinational
 Convolution_Filter conv_filter(	iCLK,
 				iSW,
 				cDATAdd_2,	//input[11:0] X_INn1n1,
@@ -92,9 +93,11 @@ Convolution_Filter conv_filter(	iCLK,
 				cDATA_0, //input[11:0] X_INp1p1,
 				y
 			);
-			
+
+// Abs module
 Abs a1(y, abs_y);
 
+// Mask out incorrect pixels at the edge
 assign out_y = (iX_Cont > 9 && iX_Cont < 1270 && iY_Cont > 9 && iY_Cont < 940 ) ? abs_y : 12'b0;
 						
 
@@ -119,6 +122,7 @@ begin
 	begin
 		mDATAd_0	<=	mDATA_0;
 		mDATAd_1	<=	mDATA_1;
+		// Delay of Line buffer
 		cDATAd_0 <= cDATA_0;
 		cDATAd_1 <= cDATA_1;
 		cDATAd_2 <= cDATA_2;
