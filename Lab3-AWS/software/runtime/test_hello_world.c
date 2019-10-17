@@ -1,6 +1,7 @@
 // Amazon FPGA Hardware Development Kit
 //
 // Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2019 Yuhua Chen and Winor Chen. All Rights Reserved.
 //
 // Licensed under the Amazon Software License (the "License"). You may not use
 // this file except in compliance with the License. A copy of the License is
@@ -37,6 +38,15 @@
 
 #define HELLO_WORLD_REG_ADDR UINT64_C(0x500)
 #define VLED_REG_ADDR	UINT64_C(0x504)
+#define CONV_IN_0_REG_ADDR UINT64_C(0x508)
+#define CONV_IN_1_REG_ADDR UINT64_C(0x50C)
+#define CONV_IN_2_REG_ADDR UINT64_C(0x510)
+#define CONV_IN_3_REG_ADDR UINT64_C(0x514)
+#define CONV_IN_4_REG_ADDR UINT64_C(0x518)
+#define CONV_IN_5_REG_ADDR UINT64_C(0x51C)
+#define CONV_IN_6_REG_ADDR UINT64_C(0x520)
+#define CONV_IN_7_REG_ADDR UINT64_C(0x524)
+#define CONV_IN_8_REG_ADDR UINT64_C(0x528)
 
 /* use the stdout logger for printing debug information  */
 #ifndef SV_TEST
@@ -57,8 +67,9 @@ void usage(char* program_name) {
     printf("usage: %s [--slot <slot-id>][<poke-value>]\n", program_name);
 }
 
-uint32_t byte_swap(uint32_t value);
- 
+int32_t convolve_h(int32_t value);
+int32_t convolve_v(int32_t value);
+
 #endif
 
 /*
@@ -66,13 +77,46 @@ uint32_t byte_swap(uint32_t value);
  */
 int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id);
 
-uint32_t byte_swap(uint32_t value) {
-    uint32_t swapped_value = 0;
-    int b;
-    for (b = 0; b < 4; b++) {
-        swapped_value |= ((value >> (b * 8)) & 0xff) << (8 * (3-b));
-    }
-    return swapped_value;
+int32_t coeffs_v[3][3];
+int32_t coeffs_h[3][3];
+/* Perform a convolution of 9 values.
+ * Once again, the input values are arranged in this manner
+ *
+ * [HORIZONAL]
+ */
+int32_t convolve_h(int32_t** conv_in)
+{
+	int32_t y_h = 0;
+
+	for(int32_t m = 0; m < 3; m++)
+	{
+		for(int32_t n = 0; n < 3; n++)
+		{
+			y_h += conv_in[2 - m][2 - n] * coeffs_h[m][n];
+		}
+	}
+
+	return y_h;
+}
+
+/* Perform a convolution of 9 values.
+ * Once again, the input values are arranged in this manner
+ *
+ * [VERTICAL]
+ */
+int32_t convolve_v(int32_t** conv_in)
+{
+	int32_t y_v = 0;
+
+	for(int32_t m = 0; m < 3; m++)
+	{
+		for(int32_t n = 0; n < 3; n++)
+		{
+			y_v += conv_in[2 - m][2 - n] * coeffs_v[m][n];
+		}
+	}
+
+	return y_v;
 }
 
 #ifdef SV_TEST
@@ -86,6 +130,27 @@ void test_main(uint32_t *exit_code)
 int main(int argc, char **argv)
 #endif
 {
+	// Set my convolution coefficients
+	coeffs_v[0][0] = -1;
+	coeffs_v[0][1] = 0;
+	coeffs_v[0][2] = 1;
+	coeffs_v[1][0] = -2;
+	coeffs_v[1][1] = 0;
+	coeffs_v[1][2] = 2;
+	coeffs_v[2][0] = -1;
+	coeffs_v[2][1] = 0;
+	coeffs_v[2][2] = 1;
+
+	coeffs_h[0][0] = -1;
+	coeffs_h[0][1] = -2;
+	coeffs_h[0][2] = -1;
+	coeffs_h[1][0] = 0;
+	coeffs_h[1][1] = 0;
+	coeffs_h[1][2] = 0;
+	coeffs_h[2][0] = 1;
+	coeffs_h[2][1] = 2;
+	coeffs_h[2][2] = 1;
+
     //The statements within SCOPE ifdef below are needed for HW/SW co-simulation with VCS
     #ifdef SCOPE
       svScope scope;
@@ -245,27 +310,62 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
     fail_on(rc, out, "Unable to attach to the AFI on slot id %d", slot_id);
 #endif
     
+	// Test input
+	int32_t conv_in[3][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
     /* write a value into the mapped address space */
-    uint32_t expected = byte_swap(value);
-    printf("Writing 0x%08x to HELLO_WORLD register (0x%016lx)\n", value, HELLO_WORLD_REG_ADDR);
+    uint32_t expected_v = convolve_v(conv_in); // expected value from convolution (vertical)
+	uint32_t expected_h = convolve_v(conv_in); // expected value from convolution (horizontal)
+
+	/* HORIZONTAL CONVOLUTION
+	 * (todo: enable convolution in hardware)
+	 */
+	printf("Writing the expected convolution value (of vertical) to registers...\n", value, HELLO_WORLD_REG_ADDR);
+
+	// Write register values
+	rc = fpga_pci_poke(pci_bar_handle, HELLO_WORLD_REG_ADDR, value);
+    fail_on(rc, out, "Unable to write to the fpga !");
+
+    /* read it back and print it out; you should expect the byte order to be
+     * reversed (That's what this CL does) */
+	int32_t fpga_h_output;
+    rc = fpga_pci_peek(pci_bar_handle, HELLO_WORLD_REG_ADDR, &fpga_h_output);
+    fail_on(rc, out, "Unable to read read from the fpga !");
+    printf("register: 0x%x\n", value);
+    if(value == expected_h) {
+        printf("TEST PASSED");
+        printf("Resulting value for Horizontal Conv. matched expected value 0x%x. It worked!\n", expected);
+    }
+    else{
+        printf("TEST FAILED");
+        printf("Resulting value for Horizontal Conv. did not match expected value 0x%x. Something didn't work.\n", expected);
+    }
+
+	/* VERTICAL CONVOLUTION
+	 * (todo: enable convolution in hardware)
+	 */
+	printf("Writing the expected convolution value (of horizontal) to registers...\n", value, HELLO_WORLD_REG_ADDR);
+	int32_t fpga_v_output;
     rc = fpga_pci_poke(pci_bar_handle, HELLO_WORLD_REG_ADDR, value);
 
     fail_on(rc, out, "Unable to write to the fpga !");
 
     /* read it back and print it out; you should expect the byte order to be
      * reversed (That's what this CL does) */
-    rc = fpga_pci_peek(pci_bar_handle, HELLO_WORLD_REG_ADDR, &value);
+    rc = fpga_pci_peek(pci_bar_handle, HELLO_WORLD_REG_ADDR, &fpga_v_output);
     fail_on(rc, out, "Unable to read read from the fpga !");
-    printf("=====  Entering peek_poke_example =====\n");
     printf("register: 0x%x\n", value);
-    if(value == expected) {
+    if(value == expected_v) {
         printf("TEST PASSED");
-        printf("Resulting value matched expected value 0x%x. It worked!\n", expected);
+        printf("Resulting value for Vertical Conv. matched expected value 0x%x. It worked!\n", expected);
     }
     else{
         printf("TEST FAILED");
-        printf("Resulting value did not match expected value 0x%x. Something didn't work.\n", expected);
+        printf("Resulting value for Vertical Conv. did not match expected value 0x%x. Something didn't work.\n", expected);
     }
+
+
+
 out:
     /* clean up */
     if (pci_bar_handle >= 0) {
@@ -277,6 +377,7 @@ out:
 
     /* if there is an error code, exit with status 1 */
     return (rc != 0 ? 1 : 0);
+
 }
 
 #ifdef SV_TEST
