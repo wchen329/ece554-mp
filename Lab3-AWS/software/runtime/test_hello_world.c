@@ -67,9 +67,6 @@ void usage(char* program_name) {
     printf("usage: %s [--slot <slot-id>][<poke-value>]\n", program_name);
 }
 
-int32_t convolve_h(int32_t** value);
-int32_t convolve_v(int32_t** value);
-
 #endif
 
 /*
@@ -77,21 +74,32 @@ int32_t convolve_v(int32_t** value);
  */
 int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id);
 
-int32_t coeffs_v[3][3];
-int32_t coeffs_h[3][3];
 /* Perform a convolution of 9 values.
  * Once again, the input values are arranged in this manner
  *
  * [HORIZONAL]
  */
-int32_t convolve_h(int32_t** conv_in)
+int32_t convolve_h(int32_t conv_in[3][3])
 {
+	int32_t coeffs_h[3][3];
+
+	coeffs_h[0][0] = -1;
+	coeffs_h[0][1] = -2;
+	coeffs_h[0][2] = -1;
+	coeffs_h[1][0] = 0;
+	coeffs_h[1][1] = 0;
+	coeffs_h[1][2] = 0;
+	coeffs_h[2][0] = 1;
+	coeffs_h[2][1] = 2;
+	coeffs_h[2][2] = 1;
+
 	int32_t y_h = 0;
 
 	int32_t m = 0;
 	for(m = 0; m < 3; m++)
 	{
-		for(int32_t n = 0; n < 3; n++)
+		int32_t n = 0;
+		for(n = 0; n < 3; n++)
 		{
 			y_h += conv_in[2 - m][2 - n] * coeffs_h[m][n];
 		}
@@ -105,14 +113,27 @@ int32_t convolve_h(int32_t** conv_in)
  *
  * [VERTICAL]
  */
-int32_t convolve_v(int32_t** conv_in)
+int32_t convolve_v(int32_t conv_in[3][3])
 {
+	int32_t coeffs_v[3][3];
+
+	coeffs_v[0][0] = -1;
+	coeffs_v[0][1] = 0;
+	coeffs_v[0][2] = 1;
+	coeffs_v[1][0] = -2;
+	coeffs_v[1][1] = 0;
+	coeffs_v[1][2] = 2;
+	coeffs_v[2][0] = -1;
+	coeffs_v[2][1] = 0;
+	coeffs_v[2][2] = 1;
+
 	int32_t y_v = 0;
 
 	int32_t m = 0;
 	for(m = 0; m < 3; m++)
 	{
-		for(int32_t n = 0; n < 3; n++)
+		int32_t n = 0;
+		for(n = 0; n < 3; n++)
 		{
 			y_v += conv_in[2 - m][2 - n] * coeffs_v[m][n];
 		}
@@ -133,25 +154,7 @@ int main(int argc, char **argv)
 #endif
 {
 	// Set my convolution coefficients
-	coeffs_v[0][0] = -1;
-	coeffs_v[0][1] = 0;
-	coeffs_v[0][2] = 1;
-	coeffs_v[1][0] = -2;
-	coeffs_v[1][1] = 0;
-	coeffs_v[1][2] = 2;
-	coeffs_v[2][0] = -1;
-	coeffs_v[2][1] = 0;
-	coeffs_v[2][2] = 1;
 
-	coeffs_h[0][0] = -1;
-	coeffs_h[0][1] = -2;
-	coeffs_h[0][2] = -1;
-	coeffs_h[1][0] = 0;
-	coeffs_h[1][1] = 0;
-	coeffs_h[1][2] = 0;
-	coeffs_h[2][0] = 1;
-	coeffs_h[2][1] = 2;
-	coeffs_h[2][2] = 1;
 
     //The statements within SCOPE ifdef below are needed for HW/SW co-simulation with VCS
     #ifdef SCOPE
@@ -293,8 +296,10 @@ int check_afi_ready(int slot_id) {
 
 /* Sets the FPGA state as necessary
  */
-void prepare_fpga_state(int32_t ** in)
+void prepare_fpga_state(int32_t in[3][3], pci_bar_handle_t h)
 {
+    pci_bar_handle_t pci_bar_handle = h;
+    int rc;
 	// Write register values,
 	// This prepares the input values to the convolution
 	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_0_REG_ADDR, in[0][0]);
@@ -323,13 +328,17 @@ void prepare_fpga_state(int32_t ** in)
 
 	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_8_REG_ADDR, in[2][2]);
     fail_on(rc, out, "Unable to write input 8 to the fpga !");
+
+out:
+	return;
 }
 
 /* This sets the current convolution mode
  * of the FPGA Convolution Engine
  */
-void set_convolution_mode_horz(int isHorz)
+void set_convolution_mode_horz(int isHorz, pci_bar_handle_t pci_bar_handle)
 {
+	int rc;
 	if(isHorz)
 	{
 		rc = fpga_pci_poke(pci_bar_handle, CONV_MODE_REG_ADDR, 1);
@@ -341,6 +350,9 @@ void set_convolution_mode_horz(int isHorz)
 		rc = fpga_pci_poke(pci_bar_handle, CONV_MODE_REG_ADDR, 0);
 		fail_on(rc, out, "Unable to write Convolution Mode (vertical) !");
 	}
+
+out:
+	return;
 }
 
 /* Wait for a while
@@ -392,15 +404,15 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 	uint32_t expected_h = convolve_h(conv_in) & ((1 << 12) - 1); // expected value from convolution (horizontal), mask to remove anything beyond 12 bits
 
 	// Set register values
-	prepare_fpga_state(conv_in);
+	prepare_fpga_state(conv_in, pci_bar_handle);
 	wait_l();
 
 	/* HORIZONTAL CONVOLUTION
 	 */
 
 	printf("Writing the expected convolution value (of horizontal) to registers...\n");
-	int32_t fpga_h_output;
-	set_convolution_mode_horz(1);
+	uint32_t fpga_h_output;
+	set_convolution_mode_horz(1, pci_bar_handle);
 	wait_l();
 
     /* read it back and print it out; you should expect the byte order to be
@@ -409,18 +421,19 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
     fail_on(rc, out, "Unable to read read from the fpga !");
     if(fpga_h_output == expected_h) {
         printf("TEST PASSED");
-        printf("Resulting value for Horizontal Conv. matched expected value 0x%x. It worked!\n", expected);
+        printf("Resulting value for Horizontal Conv. matched expected value 0x%x. It worked!\n", expected_h);
     }
     else{
         printf("TEST FAILED");
-        printf("Resulting value for Horizontal Conv. did not match expected value 0x%x. Something didn't work.\n", expected);
+        printf("Resulting value for Horizontal Conv. did not match expected value 0x%x. Something didn't work.\n", expected_h);
+	printf("Got: 0x%x", fpga_h_output);
     }
 
 	/* VERTICAL CONVOLUTION
 	 */
 	printf("Writing the expected convolution value (of vertical) to registers...\n");
-	int32_t fpga_v_output;
-	set_convolution_mode_horz(0);
+	uint32_t fpga_v_output;
+	set_convolution_mode_horz(0, pci_bar_handle);
 	wait_l();
 
     fail_on(rc, out, "Unable to write to the fpga !");
@@ -431,11 +444,12 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
     fail_on(rc, out, "Unable to read read from the fpga !");
     if(fpga_v_output == expected_v) {
         printf("TEST PASSED");
-        printf("Resulting value for Vertical Conv. matched expected value 0x%x. It worked!\n", expected);
+        printf("Resulting value for Vertical Conv. matched expected value 0x%x. It worked!\n", expected_v);
     }
     else{
         printf("TEST FAILED");
-        printf("Resulting value for Vertical Conv. did not match expected value 0x%x. Something didn't work.\n", expected);
+        printf("Resulting value for Vertical Conv. did not match expected value 0x%x. Something didn't work.\n", expected_v);
+	printf("Got: 0x%x", fpga_v_output);
     }
 
 
