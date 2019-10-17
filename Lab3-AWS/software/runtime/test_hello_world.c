@@ -341,6 +341,15 @@ void set_convolution_mode_horz(int isHorz)
 	}
 }
 
+/* Wait for a while
+ * used for possible FPGA race conditions
+ */
+void wait_l()
+{
+	// Do nothing for a while
+	for(int i = 0; i < 9999999; i++);
+}
+
 /*
  * An example to attach to an arbitrary slot, pf, and bar with register access.
  */
@@ -381,6 +390,7 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 
 	// Set register values
 	prepare_fpga_state(conv_in);
+	wait_l();
 
 	/* HORIZONTAL CONVOLUTION
 	 */
@@ -388,6 +398,7 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 	printf("Writing the expected convolution value (of horizontal) to registers...\n");
 	int32_t fpga_h_output;
 	set_convolution_mode_horz(1);
+	wait_l();
 
     /* read it back and print it out; you should expect the byte order to be
      * reversed (That's what this CL does) */
@@ -407,6 +418,7 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 	printf("Writing the expected convolution value (of vertical) to registers...\n");
 	int32_t fpga_v_output;
 	set_convolution_mode_horz(0);
+	wait_l();
 
     fail_on(rc, out, "Unable to write to the fpga !");
 
