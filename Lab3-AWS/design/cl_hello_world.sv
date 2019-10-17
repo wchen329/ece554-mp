@@ -340,10 +340,6 @@ always_ff @(posedge clk_main_a0)
    else if (wready & (wr_addr == `CONV_IN_8_REG_ADDR)) begin  
       inRegs[8] <= wdata[31:0];
    end
-
-// This is assigned to a zero extended version of the convolution output
-assign hello_world_q_byte_swapped[31:0] = {hello_world_q[7:0],   hello_world_q[15:8],
-                                           hello_world_q[23:16], hello_world_q[31:24]};
 				   
 //-------------------------------------------------
 // isHorz Register
