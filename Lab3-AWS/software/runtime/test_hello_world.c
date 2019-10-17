@@ -35,7 +35,6 @@
 /* these register addresses should match the addresses in */
 /* /aws-fpga/hdk/cl/examples/common/cl_common_defines.vh */
 /* SV_TEST macro should be set if SW/HW co-simulation should be enabled */
-
 #define HELLO_WORLD_REG_ADDR UINT64_C(0x500)
 #define VLED_REG_ADDR	UINT64_C(0x504)
 #define CONV_IN_0_REG_ADDR UINT64_C(0x508)
@@ -47,6 +46,7 @@
 #define CONV_IN_6_REG_ADDR UINT64_C(0x520)
 #define CONV_IN_7_REG_ADDR UINT64_C(0x524)
 #define CONV_IN_8_REG_ADDR UINT64_C(0x528)
+#define CONV_MODE_REG_ADDR UINT64_C(0x52C)
 
 /* use the stdout logger for printing debug information  */
 #ifndef SV_TEST
@@ -289,6 +289,58 @@ int check_afi_ready(int slot_id) {
 
 #endif
 
+/* Sets the FPGA state as necessary
+ */
+void prepare_fpga_state(int32_t ** in)
+{
+	// Write register values,
+	// This prepares the input values to the convolution
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_0_REG_ADDR, in[0][0]);
+    fail_on(rc, out, "Unable to write input 0 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_1_REG_ADDR, in[0][1]);
+    fail_on(rc, out, "Unable to write input 1 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_2_REG_ADDR, in[0][2]);
+    fail_on(rc, out, "Unable to write input 2 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_3_REG_ADDR, in[1][0]);
+    fail_on(rc, out, "Unable to write input 3 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_4_REG_ADDR, in[1][1]);
+    fail_on(rc, out, "Unable to write input 4 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_5_REG_ADDR, in[1][2]);
+    fail_on(rc, out, "Unable to write input 5 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_6_REG_ADDR, in[2][0]);
+    fail_on(rc, out, "Unable to write input 6 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_7_REG_ADDR, in[2][1]);
+    fail_on(rc, out, "Unable to write input 7 to the fpga !");
+
+	rc = fpga_pci_poke(pci_bar_handle, CONV_IN_8_REG_ADDR, in[2][2]);
+    fail_on(rc, out, "Unable to write input 8 to the fpga !");
+}
+
+/* This sets the current convolution mode
+ * of the FPGA Convolution Engine
+ */
+void set_convolution_mode_horz(int isHorz)
+{
+	if(isHorz)
+	{
+		rc = fpga_pci_poke(pci_bar_handle, CONV_MODE_REG_ADDR, 1);
+		fail_on(rc, out, "Unable to write Convolution Mode (horizontal) !");
+	}
+
+	else
+	{
+		rc = fpga_pci_poke(pci_bar_handle, CONV_MODE_REG_ADDR, 0);
+		fail_on(rc, out, "Unable to write Convolution Mode (vertical) !");
+	}
+}
+
 /*
  * An example to attach to an arbitrary slot, pf, and bar with register access.
  */
@@ -315,23 +367,23 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 
     /* write a value into the mapped address space */
     uint32_t expected_v = convolve_v(conv_in); // expected value from convolution (vertical)
-	uint32_t expected_h = convolve_v(conv_in); // expected value from convolution (horizontal)
+	uint32_t expected_h = convolve_h(conv_in); // expected value from convolution (horizontal)
+
+	// Set register values
+	prepare_fpga_state(conv_in);
 
 	/* HORIZONTAL CONVOLUTION
 	 * (todo: enable convolution in hardware)
 	 */
-	printf("Writing the expected convolution value (of vertical) to registers...\n", value, HELLO_WORLD_REG_ADDR);
 
-	// Write register values
-	rc = fpga_pci_poke(pci_bar_handle, HELLO_WORLD_REG_ADDR, value);
-    fail_on(rc, out, "Unable to write to the fpga !");
+	printf("Writing the expected convolution value (of horizontal) to registers...\n");
+	int32_t fpga_h_output;
+	set_convolution_mode_horz(1);
 
     /* read it back and print it out; you should expect the byte order to be
      * reversed (That's what this CL does) */
-	int32_t fpga_h_output;
     rc = fpga_pci_peek(pci_bar_handle, HELLO_WORLD_REG_ADDR, &fpga_h_output);
     fail_on(rc, out, "Unable to read read from the fpga !");
-    printf("register: 0x%x\n", value);
     if(value == expected_h) {
         printf("TEST PASSED");
         printf("Resulting value for Horizontal Conv. matched expected value 0x%x. It worked!\n", expected);
@@ -344,9 +396,9 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
 	/* VERTICAL CONVOLUTION
 	 * (todo: enable convolution in hardware)
 	 */
-	printf("Writing the expected convolution value (of horizontal) to registers...\n", value, HELLO_WORLD_REG_ADDR);
+	printf("Writing the expected convolution value (of vertical) to registers...\n");
 	int32_t fpga_v_output;
-    rc = fpga_pci_poke(pci_bar_handle, HELLO_WORLD_REG_ADDR, value);
+	set_convolution_mode_horz(0);
 
     fail_on(rc, out, "Unable to write to the fpga !");
 
@@ -354,7 +406,6 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
      * reversed (That's what this CL does) */
     rc = fpga_pci_peek(pci_bar_handle, HELLO_WORLD_REG_ADDR, &fpga_v_output);
     fail_on(rc, out, "Unable to read read from the fpga !");
-    printf("register: 0x%x\n", value);
     if(value == expected_v) {
         printf("TEST PASSED");
         printf("Resulting value for Vertical Conv. matched expected value 0x%x. It worked!\n", expected);
