@@ -67,8 +67,8 @@ void usage(char* program_name) {
     printf("usage: %s [--slot <slot-id>][<poke-value>]\n", program_name);
 }
 
-int32_t convolve_h(int32_t value);
-int32_t convolve_v(int32_t value);
+int32_t convolve_h(int32_t** value);
+int32_t convolve_v(int32_t** value);
 
 #endif
 
@@ -88,7 +88,8 @@ int32_t convolve_h(int32_t** conv_in)
 {
 	int32_t y_h = 0;
 
-	for(int32_t m = 0; m < 3; m++)
+	int32_t m = 0;
+	for(m = 0; m < 3; m++)
 	{
 		for(int32_t n = 0; n < 3; n++)
 		{
@@ -108,7 +109,8 @@ int32_t convolve_v(int32_t** conv_in)
 {
 	int32_t y_v = 0;
 
-	for(int32_t m = 0; m < 3; m++)
+	int32_t m = 0;
+	for(m = 0; m < 3; m++)
 	{
 		for(int32_t n = 0; n < 3; n++)
 		{
@@ -347,7 +349,8 @@ void set_convolution_mode_horz(int isHorz)
 void wait_l()
 {
 	// Do nothing for a while
-	for(int i = 0; i < 9999999; i++);
+	int i = 0;
+	for(i = 0; i < 9999999; i++);
 }
 
 /*
