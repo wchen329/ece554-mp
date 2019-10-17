@@ -362,18 +362,27 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
     fail_on(rc, out, "Unable to attach to the AFI on slot id %d", slot_id);
 #endif
     
-	// Test input
-	int32_t conv_in[3][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	// Test input, set to "Hello world" value + 1, 2, 3, 4, 5, 6, 7, 8, 9
+	int32_t conv_in[3][3];
+	conv_in[0][0] = value + 1;
+	conv_in[0][1] = value + 2;
+	conv_in[0][2] = value + 3;
+	conv_in[1][0] = value + 4;
+	conv_in[1][1] = value + 5;
+	conv_in[1][2] = value + 6;
+	conv_in[2][0] = value + 7;
+	conv_in[2][1] = value + 8;
+	conv_in[2][2] = value + 9;
 
-    /* write a value into the mapped address space */
-    uint32_t expected_v = convolve_v(conv_in) & ((1 << 12) - 1); // expected value from convolution (vertical), mask to remove anything beyond 12 bits
+       /* write a value into the mapped address space */
+	// TODO: perhaps, we might want to specifically sign extend, instead of zero extend?
+        uint32_t expected_v = convolve_v(conv_in) & ((1 << 12) - 1); // expected value from convolution (vertical), mask to remove anything beyond 12 bits
 	uint32_t expected_h = convolve_h(conv_in) & ((1 << 12) - 1); // expected value from convolution (horizontal), mask to remove anything beyond 12 bits
 
 	// Set register values
 	prepare_fpga_state(conv_in);
 
 	/* HORIZONTAL CONVOLUTION
-	 * (todo: enable convolution in hardware)
 	 */
 
 	printf("Writing the expected convolution value (of horizontal) to registers...\n");
@@ -394,7 +403,6 @@ int peek_poke_example(uint32_t value, int slot_id, int pf_id, int bar_id) {
     }
 
 	/* VERTICAL CONVOLUTION
-	 * (todo: enable convolution in hardware)
 	 */
 	printf("Writing the expected convolution value (of vertical) to registers...\n");
 	int32_t fpga_v_output;
