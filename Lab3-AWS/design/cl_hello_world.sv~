@@ -308,7 +308,7 @@ assign hello_world_q_byte_swapped[31:0] = {20{{1'b0}}, convOut}; // Zero extend 
 // When read it, returns the byte-flipped value.
 
 always_ff @(posedge clk_main_a0)
-   if (!rst_main_n_sync) begin                    // Reset all
+   if (!rst_main_n_sync) begin                    // Reset
       for(regCount = 0; regCount < 9; regCount++) begin
           inRegs[regCount] <= 32'h0000_0000;
       end
