@@ -65,7 +65,7 @@ logic rst_main_n_sync;
 
 
   // Convolution Engine
-Convolution_Filter CV(	.clk(clk_main_a0)
+Convolution_Filter CV(	.clk(clk_main_a0),
 			.isHorz(|isHorz),
 			.X_p0(inRegs[0][11:0]),
 			.X_p1(inRegs[1][11:0]),
@@ -300,7 +300,7 @@ always_ff @(posedge clk_main_a0)
       hello_world_q[31:0] <= hello_world_q[31:0];
    end
 
-assign hello_world_q_byte_swapped[31:0] = {20{{1'b0}}, convOut}; // Zero extend the convolution output by 20
+assign hello_world_q_byte_swapped[31:0] = {{20{1'b0}}, convOut}; // Zero extend the convolution output by 20
                                            
 //-------------------------------------------------
 // Input Registers
