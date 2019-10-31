@@ -2,3 +2,5 @@
 
 FPGA Miniprojects for ECE 554. They currently consist of
 - SPART
+- Edge Detector
+- Convolution on AWS
